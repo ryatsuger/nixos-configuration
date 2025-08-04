@@ -1,0 +1,27 @@
+# Local user configuration
+# Copy this file to local.nix and customize for your setup
+{ config, lib, pkgs, ... }:
+
+{
+  # User account settings
+  mySystem = {
+    username = "alice";
+    userFullName = "Alice Smith";
+    userEmail = "alice@example.com";
+  };
+  
+  # SSH authorized keys for this machine
+  # mySystem.ssh.authorizedKeys = [
+  #   "ssh-ed25519 AAAAC3... alice@laptop"
+  #   "ssh-ed25519 AAAAC3... alice@desktop"
+  # ];
+  
+  # Machine-specific settings
+  # networking.hostName = "my-custom-hostname";
+  
+  # Additional packages for this machine
+  # environment.systemPackages = with pkgs; [
+  #   vim
+  #   htop
+  # ];
+}

@@ -1,0 +1,96 @@
+# Nix build outputs
+result
+result-*
+
+# Nix temporary files
+.direnv/
+.devenv/
+
+# Editor temporary files
+*.swp
+*.swo
+*~
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+Session.vim
+.netrwhist
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+.directory
+.Trash-*
+
+# Logs
+*.log
+logs/
+
+# Secrets and sensitive data
+secrets/
+*.secret
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+id_ecdsa
+id_dsa
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Cache directories
+.cache/
+__pycache__/
+*.pyc
+
+# Temporary directories
+tmp/
+temp/
+.tmp/
+
+# Home Manager
+.config/home-manager/
+
+# System specific
+hardware-configuration.nix.bak
+
+# SSH known hosts (if generated)
+known_hosts.generated
+
+# Nix repl history
+.nix-repl-history
+.claude/
