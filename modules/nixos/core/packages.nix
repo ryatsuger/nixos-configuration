@@ -47,6 +47,7 @@
     
     # Cloud tools
     kubectl
+    kubernetes-helm
     
     # Spell checkers
     ispell

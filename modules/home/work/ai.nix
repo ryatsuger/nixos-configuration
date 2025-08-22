@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  claudeVersion = "1.0.53";
+  claudeVersion = "1.0.88";
   claudeCode_latest = pkgs.claude-code.overrideAttrs (old: {
     version = claudeVersion;
 
@@ -10,7 +10,7 @@ let
       url =
         "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${claudeVersion}.tgz";
       # run the command below and paste the result:
-      hash = "sha256-P5cD3OPIbgAwvh5Iwm0hFUeTa+nDR/cu/hg1x6BlEAw=";
+      hash = "sha256-w5moh5uANkylnFuLiHKRMpfC4v0eCy+dwxSe3glDbnQ=";
     };
 
     # update the vendor-deps hash (required for all npm-builds)
