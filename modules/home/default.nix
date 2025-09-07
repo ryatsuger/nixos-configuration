@@ -19,7 +19,7 @@
     ./work/aws.nix
   ] ++ lib.optionals (osConfig.mySystem.enableDesktop or false) [
     # Desktop-only modules
-    ./terminal/alacritty.nix
+    ./terminal/kitty.nix
     ./desktop/screen-lock.nix
     ./desktop/browsers.nix
     # ./editors/vscode.nix  # Uncomment if needed

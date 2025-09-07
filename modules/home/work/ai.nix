@@ -30,11 +30,14 @@ let
     # update the vendor-deps hash (required for all npm-builds)
     npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
   });
+
+  codex = pkgs.callPackage ./codex.nix {};
 in {
   # nixpkgs.config.allowUnfree = true;  # This is already set globally
   home.packages = [
     claudeCode_latest
     gemini_latest
     #pkgs.gemini-cli
+    codex
   ];
 }

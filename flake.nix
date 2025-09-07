@@ -26,6 +26,18 @@
   in
   {
     nixosConfigurations = {
+
+      # Vmware VM (Apple Silicon M4)
+      vmware = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/vmware/default.nix
+          home-manager.nixosModules.home-manager
+          homeManagerConfig
+        ];
+      };
+
       # Parallels VM (Apple Silicon M4)
       parallels = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";

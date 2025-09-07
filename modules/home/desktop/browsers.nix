@@ -2,7 +2,7 @@
 
 {
   programs.google-chrome = {
-    enable = true;
+    enable = false;
   };
   
   # Additional browser-related packages
