@@ -27,18 +27,6 @@
     
     # Host-specific configurations
     matchBlocks = {
-      "github.com" = {
-        hostname = "github.com";
-        user = "git";
-        identityFile = "~/.ssh/id_ed25519";
-      };
-      
-      "gitlab.com" = {
-        hostname = "gitlab.com";
-        user = "git";
-        identityFile = "~/.ssh/id_ed25519_gitlab";
-      };
-      
       # Work-related hosts (example)
       # "*.company.com" = {
       #   user = osConfig.mySystem.username or "nixos";
