@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  claudeVersion = "1.0.88";
+  claudeVersion = "2.0.14";
   claudeCode_latest = pkgs.claude-code.overrideAttrs (old: {
     version = claudeVersion;
 
@@ -10,7 +10,7 @@ let
       url =
         "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${claudeVersion}.tgz";
       # run the command below and paste the result:
-      hash = "sha256-w5moh5uANkylnFuLiHKRMpfC4v0eCy+dwxSe3glDbnQ=";
+      hash = "sha256-OKEBzHtxuiRtlRuIa/Bbo5Sa0/77DJjNCw1Ekw4tchk=";
     };
 
     # update the vendor-deps hash (required for all npm-builds)
@@ -31,7 +31,7 @@ let
     npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
   });
 
-  codex = pkgs.callPackage ./codex.nix {};
+  codex = pkgs.callPackage ./codex.nix { };
 in {
   # nixpkgs.config.allowUnfree = true;  # This is already set globally
   home.packages = [

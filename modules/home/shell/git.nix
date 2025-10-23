@@ -2,6 +2,9 @@
 
 {
   programs.home-manager.enable = true;
+  
+  home.packages = [ pkgs.gh ];
+  
   programs.git = {
     userName = osConfig.mySystem.userFullName or "NixOS User";
     userEmail = osConfig.mySystem.userEmail or "user@example.com";

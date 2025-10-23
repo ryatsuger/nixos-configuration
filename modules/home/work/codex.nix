@@ -7,18 +7,18 @@ let
     "x86_64-linux" = "x86_64-unknown-linux-gnu";
   };
   arch = archMap.${system} or (throw "Unsupported system: ${system}");
-  
+
   sha256Map = {
-    "aarch64-linux" = "0sah7c5id59miws802kp1rzwa25chjcnrxqqprla1x6zkbwygxwk";
+    "aarch64-linux" = "jlByjDl21UorhqPWInXeYAIXuP6yD871F0bxz5Oy4eo=";
     "x86_64-linux" = "01x418vvn0mgsj67k8qfng6sd83sq4ja6bn68r0494729lwfl15z";
   };
-in
-stdenv.mkDerivation rec {
+in stdenv.mkDerivation rec {
   pname = "codex";
-  version = "0.29.0";
+  version = "0.38.0";
 
   src = fetchurl {
-    url = "https://github.com/openai/codex/releases/download/rust-v${version}/codex-${arch}.tar.gz";
+    url =
+      "https://github.com/openai/codex/releases/download/rust-v${version}/codex-${arch}.tar.gz";
     sha256 = sha256Map.${system};
   };
 
@@ -29,9 +29,9 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
-    
+
     install -D -m755 codex-${arch} $out/bin/codex
-    
+
     runHook postInstall
   '';
 

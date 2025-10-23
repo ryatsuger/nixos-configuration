@@ -26,8 +26,10 @@
       enable_audio_bell = false;
       visual_bell_duration = 0;
       
-      # Color scheme (optional - you can customize these)
+      # Background opacity
       background_opacity = "0.95";
+      
+      # Using default theme (remove include to use Kitty's default colors)
       
       # Scrollback
       scrollback_lines = 10000;
