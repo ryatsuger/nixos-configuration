@@ -1,7 +1,7 @@
 { config, lib, pkgs, osConfig, ... }:
 
 let
-  has1PasswordGui = osConfig.programs._1password-gui.enable or false;
+  isHeadless = osConfig.mySystem.headless or false;
 in
 {
   programs.ssh = {
@@ -11,7 +11,7 @@ in
     extraConfig = ''
       # Global settings for all hosts
       Host *
-    '' + lib.optionalString has1PasswordGui ''
+    '' + lib.optionalString (!isHeadless) ''
         # 1Password agent (desktop only)
         IdentityAgent ~/.1password/agent.sock
     '' + ''
@@ -40,7 +40,7 @@ in
   };
 
   # SSH agent systemd service (desktop only, headless uses agent forwarding)
-  systemd.user.services.ssh-agent = lib.mkIf has1PasswordGui {
+  systemd.user.services.ssh-agent = lib.mkIf (!isHeadless) {
     Unit = {
       Description = "SSH Agent";
       Documentation = "man:ssh-agent(1)";
@@ -61,7 +61,7 @@ in
   };
 
   # Set SSH_AUTH_SOCK only on desktop (headless gets it from agent forwarding)
-  home.sessionVariables = lib.mkIf has1PasswordGui {
+  home.sessionVariables = lib.mkIf (!isHeadless) {
     SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/ssh-agent.socket";
   };
 }

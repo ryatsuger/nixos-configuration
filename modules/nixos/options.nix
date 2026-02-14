@@ -8,6 +8,12 @@
         default = false;
         description = "Enable desktop environment and GUI applications";
       };
+
+      headless = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Headless host (no local display). Disables local SSH agent in favor of agent forwarding.";
+      };
       
       username = lib.mkOption {
         type = lib.types.str;

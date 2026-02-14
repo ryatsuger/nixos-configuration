@@ -15,6 +15,7 @@
 
   # Network configuration
   networking.hostName = "gce";
+  mySystem.headless = true;
   
   # GCE-specific optimizations
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
