@@ -13,6 +13,7 @@
     
     # Editors
     ./editors/emacs.nix
+    ./editors/vscode.nix
     
     # Work tools
     ./work/ai.nix
@@ -22,6 +23,7 @@
     ./terminal/kitty.nix
     ./desktop/screen-lock.nix
     ./desktop/browsers.nix
+    ./desktop/picom.nix
     # ./editors/vscode.nix  # Uncomment if needed
   ];
 }

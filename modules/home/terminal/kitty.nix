@@ -1,4 +1,9 @@
 {
+  # Force software rendering for Kitty (fixes VM display issues)
+  home.sessionVariables = {
+    LIBGL_ALWAYS_SOFTWARE = "1";
+  };
+
   programs.kitty = {
     enable = true;
     settings = {
@@ -27,12 +32,13 @@
       visual_bell_duration = 0;
       
       # Background opacity
-      background_opacity = "0.95";
-      
-      # Using default theme (remove include to use Kitty's default colors)
-      
+      background_opacity = "1.0";
+
       # Scrollback
       scrollback_lines = 10000;
+
+      # Allow kitten themes to manage theme
+      allow_remote_control = true;
       
       # URL handling
       open_url_with = "default";
@@ -53,5 +59,6 @@
       "cmd+right" = "next_tab";
       "cmd+left" = "previous_tab";
     };
+
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  claudeVersion = "2.0.14";
+  claudeVersion = "2.1.34";
   claudeCode_latest = pkgs.claude-code.overrideAttrs (old: {
     version = claudeVersion;
 
@@ -9,26 +9,34 @@ let
     src = pkgs.fetchurl {
       url =
         "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${claudeVersion}.tgz";
-      # run the command below and paste the result:
-      hash = "sha256-OKEBzHtxuiRtlRuIa/Bbo5Sa0/77DJjNCw1Ekw4tchk=";
+      hash = "sha256-9poksTheZl3zwxmGwTNwAmUmTooZCY5huFqe73RYh1A=";
     };
 
-    # update the vendor-deps hash (required for all npm-builds)
-    npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    npmDepsHash = "sha256-n762einDxLUUXWMsfdPVhA/kn0ywlJgFQ2ZGoEk3E68=";
   });
 
-  geminiVersion = "0.1.12";
-  gemini_latest = pkgs.gemini-cli.overrideAttrs (old: {
-    version = geminiVersion;
+  geminiVersion = "v0.20.0-nightly.20251202.29920b16d";
+  gemini_latest = pkgs.gemini-cli.overrideAttrs (old: let
     src = pkgs.fetchFromGitHub {
       owner = "google-gemini";
       repo = "gemini-cli";
-      rev = "d1596cedadae4306adc4bd073daf645fe1327fd7";
-      hash = "sha256-2w28N6Fhm6k3wdTYtKH4uLPBIOdELd/aRFDs8UMWMmU=";
-    };
+      rev = geminiVersion;
+      hash = "sha256-lNz7t88KZt8dNm9S+LfiSOXSmjBKaZ+hBzlrpeeTyoc=";
 
-    # update the vendor-deps hash (required for all npm-builds)
-    npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    };
+  in {
+    inherit src;
+    version = geminiVersion;
+    npmDeps = pkgs.fetchNpmDeps {
+      inherit src;
+      hash = "sha256-us8afDtl6kiURsYJj/3wNgnybei3x6K8jbNMMO2WDGk=";
+    };
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libsecret ];
+    postInstall = (old.postInstall or "") + ''
+      rm -rf $out/lib/packages
+      cp -r packages $out/lib/
+    '';
   });
 
   codex = pkgs.callPackage ./codex.nix { };
@@ -36,6 +44,7 @@ in {
   # nixpkgs.config.allowUnfree = true;  # This is already set globally
   home.packages = [
     claudeCode_latest
+    pkgs.obsidian
     gemini_latest
     #pkgs.gemini-cli
     codex

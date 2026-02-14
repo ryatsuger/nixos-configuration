@@ -10,7 +10,8 @@
     
     # X11 display server
     ../modules/nixos/desktop/x11.nix
-    
+
+
     # Optional services for desktop
     ../modules/nixos/services/docker.nix
     ../modules/nixos/services/vnc.nix

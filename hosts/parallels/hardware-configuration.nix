@@ -29,6 +29,12 @@
     options = [ "compress=zstd" "noatime" ];
   };
 
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/bd9ffab3-19c4-4e66-aa68-69bba5947bd9";
+    fsType = "btrfs";
+    options = [ "noatime" ];
+  };
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/D812-BED4";
     fsType = "vfat";

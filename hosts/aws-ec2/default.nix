@@ -26,9 +26,6 @@
   # CloudWatch agent (optional)
   # services.amazon-cloudwatch-agent.enable = true;
   
-  # Enable Tailscale for this host
-  services.tailscale.enable = true;
-  
   # AWS expects prohibit-password for root login
   services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
 }

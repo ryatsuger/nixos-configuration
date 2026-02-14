@@ -9,12 +9,12 @@ let
   arch = archMap.${system} or (throw "Unsupported system: ${system}");
 
   sha256Map = {
-    "aarch64-linux" = "jlByjDl21UorhqPWInXeYAIXuP6yD871F0bxz5Oy4eo=";
+    "aarch64-linux" = "sha256-Zc5mrs0iMG/tDb2iwGM0S/nvbzB+WnAPrHbhQeIZcOo=";
     "x86_64-linux" = "01x418vvn0mgsj67k8qfng6sd83sq4ja6bn68r0494729lwfl15z";
   };
 in stdenv.mkDerivation rec {
   pname = "codex";
-  version = "0.38.0";
+  version = "0.84.0";
 
   src = fetchurl {
     url =

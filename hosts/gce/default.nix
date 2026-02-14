@@ -22,9 +22,6 @@
   # Google guest agent is included in the GCE module
   security.googleOsLogin.enable = true;
   
-  # Enable Tailscale for this host
-  services.tailscale.enable = true;
-  
   # GCE requires firewall to be disabled (handled by cloud firewall)
   # Override the server profile's default
   networking.firewall.enable = lib.mkForce false;

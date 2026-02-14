@@ -6,10 +6,12 @@
   home.packages = [ pkgs.gh ];
   
   programs.git = {
-    userName = osConfig.mySystem.userFullName or "NixOS User";
-    userEmail = osConfig.mySystem.userEmail or "user@example.com";
     enable = true;
-    extraConfig = {
+    settings = {
+      user = {
+        name = osConfig.mySystem.userFullName or "NixOS User";
+        email = osConfig.mySystem.userEmail or "user@example.com";
+      };
       pull = { rebase = false; };
       push = { autoSetupRemote = true; };
       core = { ignorecase = false; };
