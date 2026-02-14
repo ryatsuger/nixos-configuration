@@ -1,0 +1,2 @@
+bucket = "ruiyang-terraform-state-bucket-dev"
+prefix = "nixos-dev/dev"

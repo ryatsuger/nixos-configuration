@@ -20,7 +20,7 @@
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
   
   # Google guest agent is included in the GCE module
-  security.googleOsLogin.enable = true;
+  security.googleOsLogin.enable = lib.mkForce false;
   
   # GCE requires firewall to be disabled (handled by cloud firewall)
   # Override the server profile's default

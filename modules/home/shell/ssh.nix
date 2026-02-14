@@ -1,22 +1,25 @@
 { config, lib, pkgs, osConfig, ... }:
 
+let
+  isDesktop = osConfig.mySystem.enableDesktop or false;
+in
 {
   programs.ssh = {
     enable = true;
-    
+
     # SSH client configuration
     extraConfig = ''
       # Global settings for all hosts
       Host *
-        # Try 1Password agent first, fallback to standard SSH agent
+    '' + lib.optionalString isDesktop ''
+        # 1Password agent (desktop only)
         IdentityAgent ~/.1password/agent.sock
-        IdentityAgent ~/.ssh/agent.sock
-        
+    '' + ''
         # Security settings
         HashKnownHosts yes
         StrictHostKeyChecking ask
         VerifyHostKeyDNS yes
-        
+
         # Connection settings
         ServerAliveInterval 60
         ServerAliveCountMax 3
@@ -24,16 +27,9 @@
         ControlPath ~/.ssh/master-%r@%h:%p
         ControlPersist 10m
     '';
-    
+
     # Host-specific configurations
     matchBlocks = {
-      # Work-related hosts (example)
-      # "*.company.com" = {
-      #   user = osConfig.mySystem.username or "nixos";
-      #   identityFile = "~/.ssh/id_ed25519_work";
-      #   forwardAgent = true;
-      # };
-      
       # AWS instances via Session Manager
       "i-*" = {
         proxyCommand = "sh -c \"aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'\"";
@@ -42,14 +38,14 @@
       };
     };
   };
-  
-  # SSH agent systemd service
-  systemd.user.services.ssh-agent = {
+
+  # SSH agent systemd service (desktop only, headless uses agent forwarding)
+  systemd.user.services.ssh-agent = lib.mkIf isDesktop {
     Unit = {
       Description = "SSH Agent";
       Documentation = "man:ssh-agent(1)";
     };
-    
+
     Service = {
       Type = "forking";
       Environment = "SSH_AUTH_SOCK=%t/ssh-agent.socket";
@@ -58,15 +54,14 @@
       Restart = "on-failure";
       RestartSec = "5s";
     };
-    
+
     Install = {
       WantedBy = [ "default.target" ];
     };
   };
-  
-  # Set SSH_AUTH_SOCK for all sessions
-  home.sessionVariables = {
-    SSH_AUTH_SOCK = lib.mkIf (!config.programs._1password-gui.enable or false) 
-      "\${XDG_RUNTIME_DIR}/ssh-agent.socket";
+
+  # Set SSH_AUTH_SOCK only on desktop (headless gets it from agent forwarding)
+  home.sessionVariables = lib.mkIf isDesktop {
+    SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/ssh-agent.socket";
   };
 }
