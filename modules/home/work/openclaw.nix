@@ -27,13 +27,6 @@
       };
     };
 
-    # Systemd service configuration
-    systemd = {
-      enable = true;
-      # Environment file for API keys (not stored in nix store)
-      environmentFile = "/home/ruiyang/.secrets/openclaw-env";
-    };
-
     instances.default = {
       enable = true;
       plugins = [];
