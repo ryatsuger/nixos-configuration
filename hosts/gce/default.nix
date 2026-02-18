@@ -15,6 +15,7 @@
 
   # Network configuration
   networking.hostName = "gce";
+  networking.enableIPv6 = false;
   mySystem.headless = true;
   
   # GCE-specific optimizations

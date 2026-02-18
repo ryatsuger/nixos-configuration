@@ -40,6 +40,13 @@
 
     # Add this section for TRAMP compatibility
     initContent = lib.mkOrder 550 ''
+      # SSH agent forwarding fix for tmux
+      # Creates a stable symlink so tmux sessions can find the current agent socket
+      if [[ -n "$SSH_AUTH_SOCK" && "$SSH_AUTH_SOCK" != "$HOME/.ssh/ssh_auth_sock" ]]; then
+        ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh_auth_sock"
+        export SSH_AUTH_SOCK="$HOME/.ssh/ssh_auth_sock"
+      fi
+
       # Speed up TRAMP by providing a simple environment when TERM=dumb
       if [[ "$TERM" == "dumb" ]]; then
         # Attempt to load direnv hook first if it's essential for TRAMP

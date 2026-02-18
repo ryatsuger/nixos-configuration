@@ -8,9 +8,15 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # OpenClaw AI assistant
+    nix-openclaw = {
+      url = "github:openclaw/nix-openclaw";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, home-manager, nix-openclaw, ... }@inputs: 
   let
     # Home-manager configuration that uses the system's username
     homeManagerConfig = { config, ... }: {
@@ -19,7 +25,10 @@
         useUserPackages = true;
         users.${config.mySystem.username} = {
           home.stateVersion = "25.05";
-          imports = [ ./modules/home/default.nix ];
+          imports = [
+            ./modules/home/default.nix
+            nix-openclaw.homeManagerModules.openclaw
+          ];
         };
       };
     };
@@ -35,6 +44,7 @@
           ./hosts/vmware/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
+          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
         ];
       };
 
@@ -46,6 +56,7 @@
           ./hosts/parallels/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
+          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
         ];
       };
 
@@ -57,6 +68,7 @@
           ./hosts/aws-ec2/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
+          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
         ];
       };
 
@@ -68,6 +80,7 @@
           ./hosts/gce/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
+          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
         ];
       };
 
@@ -79,6 +92,7 @@
           ./hosts/gce/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
+          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
         ];
       };
     };
