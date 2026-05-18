@@ -92,6 +92,13 @@ nixos-rebuild switch --flake /etc/nixos/flake-config#${var.nixos_config_flake} |
   exit 1
 }
 
+# 3. Symlink ~/.config/nixos for the update alias
+echo "Creating symlink for ${var.nixos_username}..."
+USER_HOME=$(eval echo "~${var.nixos_username}")
+mkdir -p "$USER_HOME/.config"
+ln -sfn /etc/nixos/flake-config "$USER_HOME/.config/nixos"
+chown -h ${var.nixos_username}: "$USER_HOME/.config/nixos"
+
 echo "NixOS dev instance setup completed at $(date)"
 EOF
 

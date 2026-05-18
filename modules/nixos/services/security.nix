@@ -53,7 +53,7 @@
   # Common programs
   programs.gnupg.agent = {
     enable = true;
-    enableSSHSupport = true;
+    enableSSHSupport = false;  # Using 1Password SSH agent instead
   };
   
   # 1Password CLI

@@ -39,29 +39,9 @@ in
     };
   };
 
-  # SSH agent systemd service (desktop only, headless uses agent forwarding)
-  systemd.user.services.ssh-agent = lib.mkIf (!isHeadless) {
-    Unit = {
-      Description = "SSH Agent";
-      Documentation = "man:ssh-agent(1)";
-    };
-
-    Service = {
-      Type = "forking";
-      Environment = "SSH_AUTH_SOCK=%t/ssh-agent.socket";
-      ExecStart = "${pkgs.openssh}/bin/ssh-agent -a %t/ssh-agent.socket";
-      ExecStop = "${pkgs.openssh}/bin/ssh-agent -k";
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
-
-  # Set SSH_AUTH_SOCK only on desktop (headless gets it from agent forwarding)
+  # Use 1Password SSH agent on non-headless machines
+  # Headless machines rely on SSH agent forwarding
   home.sessionVariables = lib.mkIf (!isHeadless) {
-    SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/ssh-agent.socket";
+    SSH_AUTH_SOCK = "~/.1password/agent.sock";
   };
 }

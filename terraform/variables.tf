@@ -57,6 +57,12 @@ variable "nixos_config_flake" {
   default     = "gce"
 }
 
+variable "nixos_username" {
+  description = "Primary username on the NixOS instance"
+  type        = string
+  default     = "ruiyang"
+}
+
 variable "environment" {
   description = "Environment name"
   type        = string
