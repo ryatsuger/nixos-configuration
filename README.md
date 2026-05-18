@@ -250,7 +250,6 @@ System services and daemons:
 - OpenSSH with hardened settings
 - Tailscale VPN
 - Security (fail2ban, AppArmor, GnuPG)
-- VNC server (TigerVNC with secure defaults)
 
 ### Home Manager Modules (`modules/home/`)
 User-specific configuration:
@@ -259,62 +258,6 @@ User-specific configuration:
 - Text editors (Emacs, VS Code)
 - Terminal emulator (Alacritty)
 - Work tools (AWS CLI profiles)
-
-## 🖥️ VNC Remote Desktop
-
-### Enable VNC Server
-Add to your machine configuration:
-```nix
-services.vncServer = {
-  enable = true;
-  localhostOnly = true;  # Secure by default (SSH tunnel required)
-  # openFirewall = true; # Only if direct access needed
-};
-```
-
-### Quick Setup for GCE
-```bash
-# Use the provided setup script
-./scripts/gce-vnc-setup.sh [instance-name] [zone] [machine-type] [disk-size]
-
-# Or manually:
-# 1. Create instance with VNC tag
-gcloud compute instances create nixos-vnc \
-  --image-family=nixos-25-05 \
-  --image-project=nixos-cloud \
-  --machine-type=e2-medium \
-  --zone=us-central1-a \
-  --tags=vnc-server
-
-# 2. Create firewall rule
-gcloud compute firewall-rules create allow-vnc \
-  --allow tcp:5901 \
-  --source-ranges 0.0.0.0/0 \
-  --target-tags vnc-server
-
-# 3. Get external IP and connect
-gcloud compute instances describe nixos-vnc \
-  --zone=us-central1-a \
-  --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
-```
-
-### Connect via SSH Tunnel (Recommended)
-```bash
-# Create SSH tunnel
-ssh -L 5901:localhost:5901 user@remote-host
-
-# Connect VNC viewer to
-localhost:5901  # Port is always 5900 + display number
-```
-
-### Security Notes
-- VNC is configured with `localhostOnly = true` by default (secure)
-- ⚠️ **GCE configuration allows PUBLIC INTERNET ACCESS** - use with caution!
-- Strong password authentication (20-char auto-generated on GCE)
-- **Strongly recommended**: Use SSH tunneling or VPN instead of direct access
-- To view password on GCE: `sudo cat /etc/vnc-password`
-- Password files are created with 600 permissions (only readable by owner)
-- Setup script offers IP-restricted firewall rules for better security
 
 ## 🔧 Maintenance
 

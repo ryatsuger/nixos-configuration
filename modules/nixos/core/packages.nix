@@ -41,9 +41,14 @@
     nix-diff
     
     # Development tools
+    codex
     tmux
     docker-compose
     ngrok
+    nodejs
+    bun
+    nodePackages.npm
+    pnpm
     
     # Cloud tools
     kubectl

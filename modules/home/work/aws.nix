@@ -6,6 +6,8 @@
     awscli2
   ];
 
+  home.sessionVariables.AWS_PROFILE = "workload-dev";
+
   home.file.".aws/config".text = ''
     [profile workload-dev]
     sso_start_url = https://suger.awsapps.com/start

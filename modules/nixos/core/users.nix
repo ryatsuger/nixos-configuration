@@ -7,7 +7,8 @@
     description = config.mySystem.userFullName;
     extraGroups = [ "wheel" ] 
       ++ lib.optional config.virtualisation.docker.enable "docker"
-      ++ lib.optional config.networking.networkmanager.enable "networkmanager";
+      ++ lib.optional config.networking.networkmanager.enable "networkmanager"
+      ++ [ "kvm" ];
     shell = pkgs.zsh;
   };
 

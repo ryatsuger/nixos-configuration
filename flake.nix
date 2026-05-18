@@ -8,26 +8,20 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # OpenClaw AI assistant
-    nix-openclaw = {
-      url = "github:openclaw/nix-openclaw";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-openclaw, ... }@inputs: 
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
   let
     # Home-manager configuration that uses the system's username
     homeManagerConfig = { config, ... }: {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
+        backupFileExtension = "hm-backup";
         users.${config.mySystem.username} = {
           home.stateVersion = "25.05";
           imports = [
             ./modules/home/default.nix
-            nix-openclaw.homeManagerModules.openclaw
           ];
         };
       };
@@ -44,7 +38,10 @@
           ./hosts/vmware/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
-          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
+          { nixpkgs.overlays = [
+              (import ./overlays/claude-code.nix)
+              (import ./overlays/codex.nix)
+            ]; }
         ];
       };
 
@@ -56,7 +53,10 @@
           ./hosts/parallels/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
-          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
+          { nixpkgs.overlays = [
+              (import ./overlays/claude-code.nix)
+              (import ./overlays/codex.nix)
+            ]; }
         ];
       };
 
@@ -68,7 +68,10 @@
           ./hosts/aws-ec2/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
-          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
+          { nixpkgs.overlays = [
+              (import ./overlays/claude-code.nix)
+              (import ./overlays/codex.nix)
+            ]; }
         ];
       };
 
@@ -80,7 +83,10 @@
           ./hosts/gce/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
-          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
+          { nixpkgs.overlays = [
+              (import ./overlays/claude-code.nix)
+              (import ./overlays/codex.nix)
+            ]; }
         ];
       };
 
@@ -92,7 +98,10 @@
           ./hosts/gce/default.nix
           home-manager.nixosModules.home-manager
           homeManagerConfig
-          { nixpkgs.overlays = [ nix-openclaw.overlays.default ]; }
+          { nixpkgs.overlays = [
+              (import ./overlays/claude-code.nix)
+              (import ./overlays/codex.nix)
+            ]; }
         ];
       };
     };

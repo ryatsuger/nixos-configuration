@@ -10,6 +10,7 @@
     ./shell/zsh.nix
     ./shell/direnv.nix
     ./shell/ssh.nix
+    ./shell/tmux.nix
     
     # Editors
     ./editors/emacs.nix
@@ -18,7 +19,6 @@
     # Work tools
     ./work/ai.nix
     ./work/aws.nix
-    ./work/openclaw.nix
   ] ++ lib.optionals (osConfig.mySystem.enableDesktop or false) [
     # Desktop-only modules
     ./terminal/kitty.nix

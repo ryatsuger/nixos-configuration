@@ -35,7 +35,7 @@
     ];
 
     shellAliases = {
-      update = "sudo -E nixos-rebuild switch --flake ~/.config/nixos#$(hostname)";
+      update = "nix flake update --flake ~/.config/nixos && sudo -E nixos-rebuild switch --flake ~/.config/nixos#$(hostname)";
     };
 
     # Add this section for TRAMP compatibility

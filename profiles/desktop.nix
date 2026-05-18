@@ -14,7 +14,6 @@
 
     # Optional services for desktop
     ../modules/nixos/services/docker.nix
-    ../modules/nixos/services/vnc.nix
   ];
   
   # Enable desktop
