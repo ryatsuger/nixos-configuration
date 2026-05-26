@@ -22,3 +22,6 @@ Thumbs.db
 # Backup files
 *.backup
 *.bak
+
+# Local backend override (do not commit)
+*_override.tf

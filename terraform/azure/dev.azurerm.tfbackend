@@ -1,0 +1,4 @@
+resource_group_name  = "ruiyang-terraform-state"
+storage_account_name = "ruiyangtfstate"
+container_name       = "tfstate"
+key                  = "nixos-dev/azure.tfstate"

@@ -34,6 +34,7 @@
   # Install gcloud SDK for GCE management
   environment.systemPackages = with pkgs; [
     google-cloud-sdk
+    azure-cli
   ];
   
   # GCE expects prohibit-password for root login

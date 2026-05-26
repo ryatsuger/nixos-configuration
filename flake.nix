@@ -86,6 +86,23 @@
           { nixpkgs.overlays = [
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
+              (import ./overlays/azure-cli.nix)
+            ]; }
+        ];
+      };
+
+      # Microsoft Azure
+      azure = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/azure/default.nix
+          home-manager.nixosModules.home-manager
+          homeManagerConfig
+          { nixpkgs.overlays = [
+              (import ./overlays/claude-code.nix)
+              (import ./overlays/codex.nix)
+              (import ./overlays/azure-cli.nix)
             ]; }
         ];
       };
@@ -101,6 +118,7 @@
           { nixpkgs.overlays = [
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
+              (import ./overlays/azure-cli.nix)
             ]; }
         ];
       };
