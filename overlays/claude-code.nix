@@ -1,15 +1,15 @@
 final: prev:
 let
-  version = "2.1.141";
+  version = "2.1.154";
   baseUrl = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases";
   platforms = {
     "x86_64-linux" = {
       key = "linux-x64";
-      hash = "sha256-gyvibo8Vsq6Z5SCiKwNPxL+tHLW4Tea3BkhwcsVrtC4=";
+      hash = "sha256-Z/bKt+bBJAEPYqwY+AeLwJ4NtqW56K6HTp5zAzxFF5M=";
     };
     "aarch64-linux" = {
       key = "linux-arm64";
-      hash = "sha256-3JMeJPYq+63I3GgRUniwhJOCWj7R6nU9WHB3GBpsxjs=";
+      hash = "sha256-n3Mt4nj3rcYdKf1bBV3a8brjuybXX+bgahJWAlZXd6g=";
     };
   };
   plat = platforms.${prev.stdenv.hostPlatform.system};
