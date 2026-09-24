@@ -8,9 +8,12 @@
   programs.git = {
     enable = true;
     settings = {
+      # The git author, NOT the system account identity. Keeping these separate
+      # is the point: mySystem.userEmail is a work address, and using it here
+      # stamped work identity onto personal commits.
       user = {
-        name = osConfig.mySystem.userFullName or "NixOS User";
-        email = osConfig.mySystem.userEmail or "user@example.com";
+        name = osConfig.mySystem.gitUserName or "NixOS User";
+        email = osConfig.mySystem.gitUserEmail or "user@example.com";
       };
       pull = { rebase = false; };
       push = { autoSetupRemote = true; };

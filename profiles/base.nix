@@ -14,7 +14,10 @@
     # Essential services
     ../modules/nixos/services/networking.nix
     ../modules/nixos/services/security.nix
-    
+
+    # Optional headless VNC server (off unless mySystem.vnc.enable = true)
+    ../modules/nixos/services/vnc.nix
+
     # Options
     ../modules/nixos/options.nix
   ];

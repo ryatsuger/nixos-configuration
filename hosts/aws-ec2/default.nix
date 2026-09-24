@@ -16,6 +16,10 @@
   
   # Network configuration
   networking.hostName = "nixos-aws";
+
+  # Headless VNC server, localhost-only — reach it over an SSH tunnel.
+  # See modules/nixos/services/vnc.nix for the one-time vncpasswd setup.
+  mySystem.vnc.enable = true;
   
   # AWS-optimized kernel parameters
   boot.kernelParams = [ "console=ttyS0" ];

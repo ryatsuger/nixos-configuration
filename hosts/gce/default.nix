@@ -17,7 +17,11 @@
   networking.hostName = "gce";
   networking.enableIPv6 = false;
   mySystem.headless = true;
-  
+
+  # Headless VNC server, localhost-only — reach it over an SSH tunnel.
+  # See modules/nixos/services/vnc.nix for the one-time vncpasswd setup.
+  mySystem.vnc.enable = true;
+
   # GCE-specific optimizations
   boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
 

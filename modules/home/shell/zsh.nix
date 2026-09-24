@@ -72,6 +72,8 @@
         # Skip any further Oh My Zsh / Powerlevel10k / plugin initialization
         return
       fi
+
+      eval "$("$HOME/.local/bin/porthop-agent" env)"
     '';
 
     sessionVariables = {

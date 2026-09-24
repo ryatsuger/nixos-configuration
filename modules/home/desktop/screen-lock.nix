@@ -42,7 +42,7 @@ in {
   home.packages = [ 
     pkgs.xidlehook 
     pkgs.xsecurelock 
-    pkgs.xorg.xset 
+    pkgs.xset
     pkgs.xscreensaver 
   ];
 

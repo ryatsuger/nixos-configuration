@@ -24,7 +24,7 @@ variable "vm_name" {
 variable "vm_size" {
   description = "Azure VM size. Use an AMD nested-virt-capable size (e.g. Standard_D16ads_v5) to match the GCE n2d host with kvm-amd."
   type        = string
-  default     = "Standard_D16ads_v5"
+  default     = "Standard_D32ads_v5"
 }
 
 variable "vhd_local_path" {
@@ -71,4 +71,16 @@ variable "environment" {
   description = "Environment name"
   type        = string
   default     = "dev"
+}
+
+variable "data_disk_size_gb" {
+  description = "Data disk size in GB, mounted at /data. Data disks (unlike the OS disk) can be expanded with the VM running."
+  type        = number
+  default     = 2048
+}
+
+variable "data_disk_type" {
+  description = "Data managed disk type"
+  type        = string
+  default     = "Premium_LRS"
 }

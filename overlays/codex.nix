@@ -1,19 +1,20 @@
 final: prev:
 let
-  version = "0.133.0";
-  sources = {
-    x86_64-linux = {
-      url = "https://github.com/openai/codex/releases/download/rust-v${version}/codex-x86_64-unknown-linux-musl.tar.gz";
-      hash = "sha256-0GAZq5w10oG3jcLrsq5VwruX6hG/f0Urr+OQ7dsANO8=";
-      binName = "codex-x86_64-unknown-linux-musl";
+  version = "0.156.1";
+  baseUrl = "https://github.com/openai/codex/releases/download/rust-v${version}";
+  platforms = {
+    "x86_64-linux" = {
+      key = "x86_64-unknown-linux-musl";
+      hash = "sha256-r/RlOag6/4bjxixZK84sUNlTkfnfKJr68DpQwB0UUz0=";
+      codeModeHostHash = "sha256-qSnaqfagvdwAwMnmQC3xF7ElrNlvnVVPbJnDLH5mxgg=";
     };
-    aarch64-linux = {
-      url = "https://github.com/openai/codex/releases/download/rust-v${version}/codex-aarch64-unknown-linux-musl.tar.gz";
-      hash = "sha256-Jov+jPgVSUD+olbfdc1EHFSgxx5sjM1Fqz92/yi6FBM=";
-      binName = "codex-aarch64-unknown-linux-musl";
+    "aarch64-linux" = {
+      key = "aarch64-unknown-linux-musl";
+      hash = "sha256-VY4SqqbayzNexHJAv5ch24pUdGgG1k8BGFpAP0T3m3I=";
+      codeModeHostHash = "sha256-QBmBOLA3mP+owNpMgnqMpYlndOoQS3EQwqLAx1YMvpQ=";
     };
   };
-  src = sources.${prev.stdenv.hostPlatform.system};
+  plat = platforms.${prev.stdenv.hostPlatform.system};
 in
 {
   # Replace codex with a prebuilt musl binary downloaded from the GitHub
@@ -24,12 +25,24 @@ in
     pname = "codex";
     inherit version;
 
-    src = prev.fetchurl {
-      inherit (src) url hash;
-    };
+    # Upstream also ships a `codex-package-*` tarball bundling both binaries
+    # plus its own rg/bwrap/zsh; take the two binaries we need on their own and
+    # keep using nixpkgs' ripgrep.
+    srcs = [
+      (prev.fetchurl {
+        url = "${baseUrl}/codex-${plat.key}.tar.gz";
+        hash = plat.hash;
+      })
+      (prev.fetchurl {
+        url = "${baseUrl}/codex-code-mode-host-${plat.key}.tar.gz";
+        hash = plat.codeModeHostHash;
+      })
+    ];
 
+    # Each tarball contains a single bare executable with no top-level
+    # directory, so unpack both side by side in the build dir.
     sourceRoot = ".";
-    dontUnpack = false;
+
     dontBuild = true;
     dontStrip = true;
     dontPatchELF = true;
@@ -38,9 +51,16 @@ in
 
     installPhase = ''
       runHook preInstall
-      install -Dm755 ${src.binName} $out/bin/.codex-unwrapped
+
+      install -Dm755 codex-${plat.key} $out/bin/.codex-unwrapped
       makeBinaryWrapper $out/bin/.codex-unwrapped $out/bin/codex \
         --prefix PATH : ${prev.lib.makeBinPath [ prev.ripgrep ]}
+
+      # Code Mode (`features.code_mode`) spawns this helper by looking for it
+      # next to the *running* executable — which is .codex-unwrapped, since the
+      # wrapper execs it — so it has to sit in the same bin directory.
+      install -Dm755 codex-code-mode-host-${plat.key} $out/bin/codex-code-mode-host
+
       runHook postInstall
     '';
 
@@ -49,7 +69,7 @@ in
       homepage = "https://github.com/openai/codex";
       license = prev.lib.licenses.asl20;
       mainProgram = "codex";
-      platforms = builtins.attrNames sources;
+      platforms = builtins.attrNames platforms;
       sourceProvenance = [ prev.lib.sourceTypes.binaryNativeCode ];
     };
   };

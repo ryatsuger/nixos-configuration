@@ -6,35 +6,49 @@ in
 {
   programs.ssh = {
     enable = true;
+    # Opt out of home-manager's legacy default `Host *` block; we define our
+    # own defaults under settings."*" below.
+    enableDefaultConfig = false;
 
-    # SSH client configuration
-    extraConfig = ''
+    settings = {
       # Global settings for all hosts
-      Host *
-    '' + lib.optionalString (!isHeadless) ''
-        # 1Password agent (desktop only)
-        IdentityAgent ~/.1password/agent.sock
-    '' + ''
+      "*" = {
         # Security settings
-        HashKnownHosts yes
-        StrictHostKeyChecking ask
-        VerifyHostKeyDNS yes
+        HashKnownHosts = true;
+        StrictHostKeyChecking = "ask";
+        VerifyHostKeyDNS = "yes";
 
         # Connection settings
-        ServerAliveInterval 60
-        ServerAliveCountMax 3
-        ControlMaster auto
-        ControlPath ~/.ssh/master-%r@%h:%p
-        ControlPersist 10m
-    '';
+        ServerAliveInterval = 60;
+        ServerAliveCountMax = 3;
+        ControlMaster = "auto";
+        ControlPath = "~/.ssh/master-%r@%h:%p";
+        ControlPersist = "10m";
+      } // lib.optionalAttrs (!isHeadless) {
+        # 1Password agent (desktop only)
+        IdentityAgent = "~/.1password/agent.sock";
+      };
 
-    # Host-specific configurations
-    matchBlocks = {
+      # GitHub is reached with several different keys from this box (four are
+      # loaded: ruiyangke, ryatsuger, rieonke, RYKE), and ControlPath has no
+      # token for the identity -- %r@%h:%p collapses to a single socket for all
+      # of github.com. The first connection wins and pins its account for
+      # ControlPersist, after which every `-i` is silently ignored: a push as
+      # ruiyangke reuses a ryatsuger master and fails with "Repository not
+      # found", which reads as a permissions problem and is not one.
+      #
+      # There is no ControlPath token for the key, so the sockets cannot be
+      # separated; multiplexing has to go for this host. The cost is one TCP
+      # and one handshake per git operation.
+      "github.com" = {
+        ControlMaster = "no";
+      };
+
       # AWS instances via Session Manager
       "i-*" = {
-        proxyCommand = "sh -c \"aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'\"";
-        user = "ec2-user";
-        identityFile = "~/.ssh/id_ed25519_aws";
+        ProxyCommand = "sh -c \"aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'\"";
+        User = "ec2-user";
+        IdentityFile = "~/.ssh/id_ed25519_aws";
       };
     };
   };

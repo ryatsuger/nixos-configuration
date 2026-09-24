@@ -49,13 +49,13 @@
 
   services.displayManager = {
     ly.enable = true;
-    defaultSession = "dwm";
+    defaultSession = "none+dwm";
   };
 
   # programs.thunar.enable = true;
   programs.dconf.enable = true;
-  programs.light.enable = true;
   environment.systemPackages = with pkgs; [
+    brightnessctl # replaces programs.light (removed in 26.05)
     dmenu
     upower
     flameshot
@@ -63,9 +63,9 @@
     xdg-desktop-portal-gnome
     
     # X utilities for preventing freezes
-    xorg.xset
-    xorg.xrandr
-    xorg.xinit
+    xset
+    xrandr
+    xinit
     
     # DWM keepalive script
     (writeScriptBin "dwm-keepalive" ''
@@ -85,7 +85,7 @@
     after = [ "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do sleep 300; ${pkgs.xorg.xset}/bin/xset q > /dev/null 2>&1 || exit 0; done'";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do sleep 300; ${pkgs.xset}/bin/xset q > /dev/null 2>&1 || exit 0; done'";
       Restart = "always";
       RestartSec = "10";
     };

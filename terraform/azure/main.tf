@@ -165,3 +165,37 @@ resource "azurerm_linux_virtual_machine" "nixos" {
     disk_size_gb         = var.os_disk_size_gb
   }
 }
+
+# --- Data disk ---------------------------------------------------------------
+
+# 2 TiB Premium SSD (P40) for build caches and container data, keeping them off
+# the 1 TiB OS disk. Mounted at /data — see fileSystems."/data" in
+# hosts/azure/default.nix.
+#
+# Created and hot-attached out of band with `az` (the VM stayed up), so it is
+# NOT yet in state. Import both before the next apply, or the apply will fail
+# trying to create a disk that already exists:
+#
+#   terraform import azurerm_managed_disk.data \
+#     /subscriptions/<sub>/resourceGroups/ruiyang-nixos-dev/providers/Microsoft.Compute/disks/ruiyang-nixos-dev-data1
+#   terraform import azurerm_virtual_machine_data_disk_attachment.data \
+#     /subscriptions/<sub>/resourceGroups/ruiyang-nixos-dev/providers/Microsoft.Compute/virtualMachines/ruiyang-nixos-dev/dataDisks/ruiyang-nixos-dev-data1
+#
+# Unlike the OS disk, a data disk can be expanded while the VM is running, so
+# raising data_disk_size_gb and applying buys more space with no downtime.
+resource "azurerm_managed_disk" "data" {
+  name                 = "${var.vm_name}-data1"
+  resource_group_name  = azurerm_resource_group.nixos.name
+  location             = azurerm_resource_group.nixos.location
+  storage_account_type = var.data_disk_type
+  create_option        = "Empty"
+  disk_size_gb         = var.data_disk_size_gb
+  tags                 = local.tags
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "data" {
+  managed_disk_id    = azurerm_managed_disk.data.id
+  virtual_machine_id = azurerm_linux_virtual_machine.nixos.id
+  lun                = 0
+  caching            = "ReadOnly"
+}

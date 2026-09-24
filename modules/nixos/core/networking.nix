@@ -36,14 +36,13 @@
   # Enable systemd-resolved for DNS resolution
   services.resolved = {
     enable = true;
-    domains = [ "~." ];
-    fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
-    dnssec = "false"; # Disable DNSSEC completely to fix resolution issues
-    extraConfig = ''
-      DNS=1.1.1.1 8.8.8.8
-      DNSOverTLS=no
-      DNSSEC=no
-    '';
+    settings.Resolve = {
+      Domains = [ "~." ];
+      FallbackDNS = [ "1.1.1.1" "8.8.8.8" ];
+      DNS = [ "1.1.1.1" "8.8.8.8" ];
+      DNSOverTLS = "no";
+      DNSSEC = "no"; # Disable DNSSEC completely to fix resolution issues
+    };
   };
 
   # Use systemd-resolved stub resolver

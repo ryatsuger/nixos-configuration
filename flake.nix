@@ -2,10 +2,10 @@
   description = "Modular NixOS Configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -41,6 +41,8 @@
           { nixpkgs.overlays = [
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
+              (import ./overlays/gws.nix)
+              (import ./overlays/opencode.nix)
             ]; }
         ];
       };
@@ -56,6 +58,8 @@
           { nixpkgs.overlays = [
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
+              (import ./overlays/gws.nix)
+              (import ./overlays/opencode.nix)
             ]; }
         ];
       };
@@ -71,6 +75,8 @@
           { nixpkgs.overlays = [
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
+              (import ./overlays/gws.nix)
+              (import ./overlays/opencode.nix)
             ]; }
         ];
       };
@@ -87,6 +93,8 @@
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
               (import ./overlays/azure-cli.nix)
+              (import ./overlays/gws.nix)
+              (import ./overlays/opencode.nix)
             ]; }
         ];
       };
@@ -103,6 +111,8 @@
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
               (import ./overlays/azure-cli.nix)
+              (import ./overlays/gws.nix)
+              (import ./overlays/opencode.nix)
             ]; }
         ];
       };
@@ -119,6 +129,8 @@
               (import ./overlays/claude-code.nix)
               (import ./overlays/codex.nix)
               (import ./overlays/azure-cli.nix)
+              (import ./overlays/gws.nix)
+              (import ./overlays/opencode.nix)
             ]; }
         ];
       };
@@ -126,8 +138,8 @@
     
     # Formatter for nix files
     formatter = {
-      x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-classic;
-      aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt-classic;
+      x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
+      aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt;
     };
   };
 }

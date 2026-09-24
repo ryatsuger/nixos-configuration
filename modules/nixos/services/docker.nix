@@ -3,7 +3,8 @@
 {
   virtualisation.docker = {
     enable = lib.mkDefault false;
-    
+    package = pkgs.docker_29;
+
     # Docker daemon settings
     daemon.settings = {
       # Enable experimental features

@@ -36,7 +36,7 @@
     yq
     
     # Nix tools
-    nixfmt-classic
+    nixfmt
     nix-tree
     nix-diff
     
@@ -47,7 +47,6 @@
     ngrok
     nodejs
     bun
-    nodePackages.npm
     pnpm
     
     # Cloud tools

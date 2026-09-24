@@ -8,26 +8,29 @@
 
   config = lib.mkIf config.mySystem.enableDesktop {
     # Desktop packages
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = (with pkgs; [
       chromium
       firefox
-      
+
       # GUI utilities
       xclip
       xsel
-      
+
       # File managers
       pcmanfm
-      
+
       # Image viewers
       feh
-      
+
       # PDF viewers
       zathura
-      
+
       # VNC client
       tigervnc
-    ];
+    ])
+    # Google Chrome has no aarch64 build, so only on x86_64 hosts (azure,
+    # gce). Installs a proper .desktop entry; binary is google-chrome-stable.
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [ pkgs.google-chrome ];
 
     # 1Password GUI
     programs._1password-gui = {

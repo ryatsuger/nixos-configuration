@@ -35,6 +35,25 @@
         description = "Email address of the primary user";
         example = "alice@example.com";
       };
+
+      # Deliberately SEPARATE from userEmail/userFullName. Those name the system
+      # account; these are the git author stamped into every commit on this box.
+      # Tying them together put a work address on personal commits, where GitHub
+      # attributed them to the wrong account entirely, and undoing that needed a
+      # history rewrite. A work repo sets its own identity per-clone instead.
+      gitUserName = lib.mkOption {
+        type = lib.types.str;
+        default = "NixOS User";
+        description = "git user.name, the author recorded in commits";
+        example = "alice";
+      };
+
+      gitUserEmail = lib.mkOption {
+        type = lib.types.str;
+        default = "user@example.com";
+        description = "git user.email, the author recorded in commits";
+        example = "alice@personal.example";
+      };
     };
   };
 }
